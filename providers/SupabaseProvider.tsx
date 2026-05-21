@@ -1,4 +1,4 @@
-import { readSubscriptionFromUser } from '@/lib/subscriptionMetadata';
+// import { readSubscriptionFromUser } from '@/lib/subscriptionMetadata';
 import { supabase } from '@/lib/supabase';
 import {
   clearCloudSession,
@@ -107,17 +107,18 @@ export function SupabaseProvider({ children }: { children: ReactNode }) {
     };
   }, []);
 
-  useEffect(() => {
-    const u = session?.user;
-    if (!u) return;
-    const meta = readSubscriptionFromUser(u);
-    if (meta.onboardingComplete) {
-      useAppStore.setState({
-        subscriptionProductId: meta.productId,
-        trialEndsAt: meta.trialEndsAt,
-      });
-    }
-  }, [session?.user?.id, session?.user?.user_metadata]);
+  // SUBSCRIPTION_LOGIC_DISABLED — sync plan from user_metadata to local store
+  // useEffect(() => {
+  //   const u = session?.user;
+  //   if (!u) return;
+  //   const meta = readSubscriptionFromUser(u);
+  //   if (meta.onboardingComplete) {
+  //     useAppStore.setState({
+  //       subscriptionProductId: meta.productId,
+  //       trialEndsAt: meta.trialEndsAt,
+  //     });
+  //   }
+  // }, [session?.user?.id, session?.user?.user_metadata]);
 
   const signInWithPassword = useCallback(async (email: string, password: string) => {
     if (!supabase) {
@@ -142,7 +143,8 @@ export function SupabaseProvider({ children }: { children: ReactNode }) {
         data: {
           full_name: trimmedName,
           name: trimmedName,
-          subscription_onboarding_complete: false,
+          // SUBSCRIPTION_LOGIC_DISABLED — require plan pick after sign-up
+          // subscription_onboarding_complete: false,
         },
       },
     });
@@ -174,7 +176,7 @@ export function SupabaseProvider({ children }: { children: ReactNode }) {
       try {
         await pushLocalDataToCloud(userId);
       } catch (e) {
-        console.warn('[ExpTrack sync] sign-out push failed', e);
+        console.warn('[Expent sync] sign-out push failed', e);
       }
     }
     clearCloudSession();

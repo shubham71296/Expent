@@ -19,7 +19,7 @@ const SLIDES = [
   {
     key: '1',
     title: 'Track in seconds',
-    body: 'Log amount, category, and an optional note. ExpTrack keeps the flow fast.',
+    body: 'Log amount, category, and an optional note. Expent keeps the flow fast.',
   },
   {
     key: '2',

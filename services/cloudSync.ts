@@ -68,14 +68,14 @@ export async function syncUserDataFromCloud(userId: string): Promise<boolean> {
       try {
         await pushExpensesAndCategories(supabase, userId);
       } catch (pushErr) {
-        console.warn('[ExpTrack sync] merge push after sign-in failed', pushErr);
+        console.warn('[Expent sync] merge push after sign-in failed', pushErr);
       }
     }
 
     return true;
   } catch (e) {
     if (generation === syncGeneration) {
-      console.warn('[ExpTrack sync] pull failed', e);
+      console.warn('[Expent sync] pull failed', e);
       useAppStore.setState({ cloudDataUserId: userId });
     }
     return generation === syncGeneration;

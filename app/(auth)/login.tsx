@@ -5,7 +5,7 @@ import { PasswordInput } from '@/components/ui/PasswordInput';
 import { AppScreen } from '@/components/ui/Screen';
 import { credentialAuthErrorMessage } from '@/lib/authUserMessage';
 import { validateLoginFields } from '@/lib/authValidation';
-import { readSubscriptionFromUser } from '@/lib/subscriptionMetadata';
+// import { readSubscriptionFromUser } from '@/lib/subscriptionMetadata';
 import { isSupabaseConfigured } from '@/lib/supabase';
 import { toast } from '@/lib/toast';
 import { useSupabase } from '@/providers/SupabaseProvider';
@@ -52,12 +52,13 @@ export default function LoginScreen() {
         toast.error(credentialAuthErrorMessage(err));
         return;
       }
-      const sub = readSubscriptionFromUser(signedIn?.user ?? null);
-      if (!sub.onboardingComplete) {
-        toast.info('Choose a plan to continue to the app.', 'Subscription required');
-        router.replace('/subscription-plans');
-        return;
-      }
+      // SUBSCRIPTION_LOGIC_DISABLED — see lib/subscriptionFeature.ts
+      // const sub = readSubscriptionFromUser(signedIn?.user ?? null);
+      // if (!sub.onboardingComplete) {
+      //   toast.info('Choose a plan to continue to the app.', 'Subscription required');
+      //   router.replace('/subscription-plans');
+      //   return;
+      // }
       toast.success('You are signed in.', 'Welcome back');
       router.replace('/(tabs)');
     } finally {

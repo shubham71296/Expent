@@ -3,5 +3,5 @@
 # or link the project and run: supabase config push
 
 [auth.email.template.magic_link]
-subject = "Your ExpTrack verification code"
+subject = "Your Expent verification code"
 content_path = "./supabase/templates/magic-link.html"

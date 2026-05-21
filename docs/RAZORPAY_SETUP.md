@@ -1,4 +1,4 @@
-# Razorpay subscription setup (ExpTrack)
+# Razorpay subscription setup (Expent)
 
 ## 1. Razorpay Dashboard
 

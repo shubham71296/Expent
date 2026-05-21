@@ -19,7 +19,7 @@ export default function SigningOutScreen() {
         await signOut();
         toast.info('See you next time.', 'Signed out');
       } catch (e) {
-        console.warn('[ExpTrack] sign out error', e);
+        console.warn('[Expent] sign out error', e);
         toast.error('Something went wrong while signing out.', 'Sign out');
       } finally {
         router.replace('/(auth)/login');

@@ -1,3 +1,30 @@
+/**
+ * Razorpay native checkout route.
+ * SUBSCRIPTION_LOGIC_DISABLED — checkout flow commented below.
+ */
+import { AppScreen } from '@/components/ui/Screen';
+import { router } from 'expo-router';
+import { useEffect } from 'react';
+import { Text, View } from 'react-native';
+
+export default function RazorpayCheckoutScreen() {
+  useEffect(() => {
+    router.replace('/(tabs)');
+  }, []);
+
+  return (
+    <AppScreen>
+      <View className="flex-1 items-center justify-center px-6">
+        <Text className="text-center text-base text-slate-600 dark:text-slate-400">
+          Payment checkout is temporarily disabled.
+        </Text>
+      </View>
+    </AppScreen>
+  );
+}
+
+/* SUBSCRIPTION_LOGIC_DISABLED — restore when enabling subscriptions (see lib/subscriptionFeature.ts)
+
 import {
   openRazorpaySubscriptionCheckout,
   settleUiBeforeRazorpayCheckout,
@@ -12,10 +39,7 @@ import { router } from 'expo-router';
 import { useCallback, useEffect, useRef } from 'react';
 import { ActivityIndicator, BackHandler, Text, View } from 'react-native';
 
-/**
- * Minimal screen so Razorpay opens without conflicting with scroll/cards (Fabric crash).
- */
-export default function RazorpayCheckoutScreen() {
+export default function RazorpayCheckoutScreenOriginal() {
   const started = useRef(false);
   const completeSubscriptionPlan = useAppStore((s) => s.completeSubscriptionPlan);
 
@@ -54,7 +78,7 @@ export default function RazorpayCheckoutScreen() {
         name: params.name,
         email: params.email,
         contact: params.contact,
-        description: 'ExpTrack subscription',
+        description: 'Expent subscription',
       });
 
       if (!checkout.paid) {
@@ -110,3 +134,5 @@ export default function RazorpayCheckoutScreen() {
     </View>
   );
 }
+
+*/

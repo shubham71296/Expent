@@ -14,6 +14,22 @@ import * as Crypto from 'expo-crypto';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
+const PERSIST_STORAGE_KEY = 'expent-v1';
+const LEGACY_PERSIST_STORAGE_KEY = 'exptrack-v1';
+
+const expentPersistStorage = {
+  getItem: async (name: string): Promise<string | null> => {
+    const value = await AsyncStorage.getItem(name);
+    if (value != null) return value;
+    if (name === PERSIST_STORAGE_KEY) {
+      return AsyncStorage.getItem(LEGACY_PERSIST_STORAGE_KEY);
+    }
+    return null;
+  },
+  setItem: (name: string, value: string) => AsyncStorage.setItem(name, value),
+  removeItem: (name: string) => AsyncStorage.removeItem(name),
+};
+
 const nowIso = () => new Date().toISOString();
 
 export function seedCategories(): Category[] {
@@ -232,8 +248,8 @@ export const useAppStore = create<AppState>()(
         }),
     }),
     {
-      name: 'exptrack-v1',
-      storage: createJSONStorage(() => AsyncStorage),
+      name: PERSIST_STORAGE_KEY,
+      storage: createJSONStorage(() => expentPersistStorage),
       version: 8,
       migrate: (persisted, fromVersion) => {
         const s = { ...(persisted as Record<string, unknown>) };

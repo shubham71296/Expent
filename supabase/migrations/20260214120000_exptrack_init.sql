@@ -1,4 +1,4 @@
--- ExpTrack: categories + expenses with RLS (apply in Supabase SQL editor or `supabase db push`)
+-- Expent: categories + expenses with RLS (apply in Supabase SQL editor or `supabase db push`)
 
 create table if not exists public.categories (
   id text primary key,

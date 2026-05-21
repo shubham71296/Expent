@@ -1,5 +1,6 @@
 import { TabScreenTopBar } from '@/components/TabScreenTopBar';
 import { Button } from '@/components/ui/Button';
+import { BUTTON_ACTIVE_OPACITY } from '@/components/ui/buttonPressable';
 import { Card, CardSectionHeader } from '@/components/ui/Card';
 import { ConfirmModal } from '@/components/ui/ConfirmModal';
 import { AppScreen } from '@/components/ui/Screen';
@@ -8,10 +9,9 @@ import { isSupabaseConfigured } from '@/lib/supabase';
 import { toast } from '@/lib/toast';
 import { useSupabase } from '@/providers/SupabaseProvider';
 import { useAppStore } from '@/store/useAppStore';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { router } from 'expo-router';
 import { useCallback, useState } from 'react';
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import { BUTTON_ACTIVE_OPACITY } from '@/components/ui/buttonPressable';
 import { Text, TouchableOpacity, View } from 'react-native';
 
 export default function SettingsScreen() {
@@ -144,7 +144,7 @@ export default function SettingsScreen() {
             className="mb-2"
           />
           <Text className="text-sm text-slate-500 dark:text-slate-400">
-            ExpTrack v1.0 — expense tracking with optional Supabase backup. When you are signed in,
+            Expent v1.0 — expense tracking with optional Supabase backup. When you are signed in,
             categories and expenses sync to your account in the background.
           </Text>
         </Card>

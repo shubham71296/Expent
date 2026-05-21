@@ -10,7 +10,8 @@ import * as XLSX from 'xlsx';
 
 const { StorageAccessFramework } = FileSystem;
 
-const ANDROID_DOWNLOADS_DIR_KEY = 'exptrack.androidDownloadsDirUri';
+const ANDROID_DOWNLOADS_DIR_KEY = 'expent.androidDownloadsDirUri';
+const LEGACY_ANDROID_DOWNLOADS_DIR_KEY = 'exptrack.androidDownloadsDirUri';
 
 export type ExportPeriod = 'daily' | 'weekly' | 'monthly' | 'yearly' | 'custom';
 
@@ -37,11 +38,11 @@ function fmtAmount(n: number, currency: string) {
 
 export function buildAllReportFileName(ext: string) {
   const stamp = format(new Date(), 'yyyy-MM-dd-HHmm');
-  return `exptrack_allreport_${stamp}.${ext}`;
+  return `expent_allreport_${stamp}.${ext}`;
 }
 
 export function buildCustomReportFileName(start: Date, end: Date, ext: string) {
-  return `exptrack_${formatExportDateSlug(start)}_to_${formatExportDateSlug(end)}.${ext}`;
+  return `expent_${formatExportDateSlug(start)}_to_${formatExportDateSlug(end)}.${ext}`;
 }
 
 function getWritableDirectory(): string {
@@ -64,13 +65,20 @@ async function copyToNamedExportPath(sourceUri: string, fileName: string): Promi
 }
 
 async function resolveAndroidDownloadsDirectory(): Promise<string> {
-  const stored = await AsyncStorage.getItem(ANDROID_DOWNLOADS_DIR_KEY);
+  let stored = await AsyncStorage.getItem(ANDROID_DOWNLOADS_DIR_KEY);
+  if (!stored) {
+    stored = await AsyncStorage.getItem(LEGACY_ANDROID_DOWNLOADS_DIR_KEY);
+    if (stored) {
+      await AsyncStorage.setItem(ANDROID_DOWNLOADS_DIR_KEY, stored);
+    }
+  }
   if (stored) {
     try {
       await StorageAccessFramework.readDirectoryAsync(stored);
       return stored;
     } catch {
       await AsyncStorage.removeItem(ANDROID_DOWNLOADS_DIR_KEY);
+      await AsyncStorage.removeItem(LEGACY_ANDROID_DOWNLOADS_DIR_KEY);
     }
   }
 
@@ -271,7 +279,7 @@ function reportHtml(params: {
     @media print{body{padding:16px}.card,h2{break-inside:avoid}tr{break-inside:avoid}}
   </style></head><body>
     <h1>${escapeHtml(title)}</h1>
-    <p class="muted">ExpTrack · Generated ${format(new Date(), 'PPpp')}</p>
+    <p class="muted">Expent · Generated ${format(new Date(), 'PPpp')}</p>
     <div class="meta">
       <span class="pill"><strong>Records</strong>${recordLabel}</span>
       <span class="pill"><strong>Currency</strong>${escapeHtml(primaryCurrency)}</span>
@@ -339,7 +347,7 @@ function buildExcelReportSheet(params: {
   const { title, expenses, breakdown, total, primaryCurrency } = params;
   const generated = format(new Date(), 'd MMMM yyyy, h:mm a');
   const rows: (string | number)[][] = [
-    ['ExpTrack Expense Report'],
+    ['Expent Expense Report'],
     [title],
     ['Generated', generated],
     ['Currency', primaryCurrency],

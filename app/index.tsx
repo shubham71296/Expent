@@ -1,7 +1,8 @@
 import { SplashScreen } from '@/components/SplashScreen';
 import { DashboardSkeleton } from '@/components/ui/skeletons/DashboardSkeleton';
 import { passwordResetFlow } from '@/lib/passwordResetFlow';
-import { readSubscriptionFromUser } from '@/lib/subscriptionMetadata';
+// SUBSCRIPTION_LOGIC_DISABLED — import when re-enabling plan gate in lib/subscriptionFeature.ts
+// import { readSubscriptionFromUser } from '@/lib/subscriptionMetadata';
 import { isSupabaseConfigured } from '@/lib/supabase';
 import { useSupabase } from '@/providers/SupabaseProvider';
 import { useAppStore } from '@/store/useAppStore';
@@ -34,12 +35,13 @@ export default function SplashRoute() {
     return <Redirect href="/(auth)/reset-password" />;
   }
 
-  if (isSupabaseConfigured && session?.user) {
-    const sub = readSubscriptionFromUser(session.user);
-    if (!sub.onboardingComplete) {
-      return <Redirect href="/subscription-plans" />;
-    }
-  }
+  // SUBSCRIPTION_LOGIC_DISABLED — see lib/subscriptionFeature.ts
+  // if (isSupabaseConfigured && session?.user) {
+  //   const sub = readSubscriptionFromUser(session.user);
+  //   if (!sub.onboardingComplete) {
+  //     return <Redirect href="/subscription-plans" />;
+  //   }
+  // }
 
   if (isSupabaseConfigured && session && cloudSyncLoading) {
     return <DashboardSkeleton />;

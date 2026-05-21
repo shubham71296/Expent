@@ -14,7 +14,7 @@ type AuthFormProps = {
   children: ReactNode;
   /** Links or secondary actions below the main form. */
   footer?: ReactNode;
-  /** Hide the ExpTrack brand row (rare). */
+  /** Hide the Expent brand row (rare). */
   hideBrand?: boolean;
 };
 
@@ -70,7 +70,7 @@ export function AuthForm({ title, subtitle, showBack, children, footer, hideBran
                 </View>
                 <View>
                   <Text className="text-lg font-bold tracking-tight text-slate-900 dark:text-white">
-                    ExpTrack
+                    Expent
                   </Text>
                   <Text className="text-[11px] font-medium text-slate-500 dark:text-slate-400">
                     Simple expense tracking

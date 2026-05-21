@@ -7,7 +7,7 @@
  *
  * Password reset OTP email: Dashboard → Authentication → Email Templates → Magic link.
  * Replace the body with supabase/templates/magic-link.html (uses {{ .Token }} only,
- * no {{ .ConfirmationURL }}), subject: "Your ExpTrack verification code".
+ * no {{ .ConfirmationURL }}), subject: "Your Expent verification code".
  */
 module.exports = ({ config }) => ({
   ...config,

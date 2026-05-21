@@ -1,4 +1,5 @@
 import type { SubscriptionProductId } from '@/types/subscription';
+import { SUBSCRIPTION_LOGIC_ENABLED } from '@/lib/subscriptionFeature';
 import { supabase } from '@/lib/supabase';
 import type { SupabaseClient } from '@supabase/supabase-js';
 
@@ -33,6 +34,11 @@ export function readSubscriptionFromUser(user: {
   productId: SubscriptionProductId | null;
   trialEndsAt: string | null;
 } {
+  // SUBSCRIPTION_LOGIC_DISABLED — no plan gate; everyone can use the app.
+  if (!SUBSCRIPTION_LOGIC_ENABLED) {
+    return { onboardingComplete: true, productId: null, trialEndsAt: null };
+  }
+
   const m = user?.user_metadata ?? {};
   const raw = m.subscription_onboarding_complete;
   if (raw === false) {

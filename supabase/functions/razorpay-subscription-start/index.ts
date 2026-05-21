@@ -72,7 +72,7 @@ Deno.serve(async (req) => {
       customer_notify: 1,
       quantity: 1,
       total_count: 12,
-      notes: { app: 'exptrack', plan_key: planKey },
+      notes: { app: 'expent', plan_key: planKey },
     });
 
     return jsonResponse({

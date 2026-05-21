@@ -56,6 +56,7 @@ export default function RootLayout() {
           name="view-expense/[id]"
           options={{ presentation: 'modal', headerShown: false }}
         />
+        {/* SUBSCRIPTION_LOGIC_DISABLED — re-enable with lib/subscriptionFeature.ts
         <Stack.Screen
           name="subscription-plans"
           options={{
@@ -72,6 +73,7 @@ export default function RootLayout() {
             gestureEnabled: false,
           }}
         />
+        */}
         <Stack.Screen name="reports" options={{ headerShown: false }} />
         <Stack.Screen name="categories" options={{ headerShown: false }} />
         <Stack.Screen

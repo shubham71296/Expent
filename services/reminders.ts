@@ -17,11 +17,18 @@ export async function ensureNotificationPermission(): Promise<boolean> {
   return req.status === 'granted';
 }
 
+const DAILY_REMINDER_KIND = 'expent-daily';
+const LEGACY_DAILY_REMINDER_KIND = 'exptrack-daily';
+
 export async function cancelExpenseReminders() {
   const all = await Notifications.getAllScheduledNotificationsAsync();
   await Promise.all(
     all
-      .filter((n) => n.content.data?.kind === 'exptrack-daily')
+      .filter(
+        (n) =>
+          n.content.data?.kind === DAILY_REMINDER_KIND ||
+          n.content.data?.kind === LEGACY_DAILY_REMINDER_KIND
+      )
       .map((n) => Notifications.cancelScheduledNotificationAsync(n.identifier))
   );
 }
@@ -30,9 +37,9 @@ export async function scheduleExpenseReminder(hour: number, minute: number) {
   await cancelExpenseReminders();
   await Notifications.scheduleNotificationAsync({
     content: {
-      title: 'ExpTrack',
+      title: 'Expent',
       body: 'Add today’s expenses in a few taps.',
-      data: { kind: 'exptrack-daily' },
+      data: { kind: DAILY_REMINDER_KIND },
     },
     trigger: {
       type: Notifications.SchedulableTriggerInputTypes.DAILY,

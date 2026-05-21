@@ -11,17 +11,18 @@ export type RazorpayPlanOption = {
   isTrial: boolean;
 };
 
-/** Plans shown in the app. Paid Razorpay plans are commented out until subscriptions go live. */
+/** Plans shown in the app. SUBSCRIPTION_LOGIC_DISABLED — empty until subscriptions return. */
 export const RAZORPAY_PLAN_OPTIONS: RazorpayPlanOption[] = [
-  {
-    id: 'trial_7d',
-    title: '7-day free trial',
-    subtitle: 'Try everything free — full access for 7 days.',
-    priceLabel: 'Free',
-    periodLabel: '7 days',
-    highlights: ['Full app access', 'Cloud sync', 'No card required for trial'],
-    isTrial: true,
-  },
+  // SUBSCRIPTION_LOGIC_DISABLED — trial + paid plans (see git history / uncomment below)
+  // {
+  //   id: 'trial_7d',
+  //   title: '7-day free trial',
+  //   subtitle: 'Try everything free — full access for 7 days.',
+  //   priceLabel: 'Free',
+  //   periodLabel: '7 days',
+  //   highlights: ['Full app access', 'Cloud sync', 'No card required for trial'],
+  //   isTrial: true,
+  // },
   // --- Paid plans (Razorpay) — hidden for now; uncomment to re-enable ---
   // {
   //   id: 'plan_3m',

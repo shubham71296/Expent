@@ -117,7 +117,7 @@ export function SplashScreen({ message }: Props) {
         </Animated.View>
 
         <Animated.View style={[titleStyle, styles.titleBlock]}>
-          <Text style={styles.brand}>ExpTrack</Text>
+          <Text style={styles.brand}>Expent</Text>
           <View style={styles.badgeRow}>
             <View style={styles.badge}>
               <MaterialCommunityIcons name="chart-line" size={14} color="#c7d2fe" />

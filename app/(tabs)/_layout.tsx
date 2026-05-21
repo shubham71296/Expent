@@ -1,5 +1,5 @@
 import { CloudSyncGate } from '@/components/CloudSyncGate';
-import { readSubscriptionFromUser } from '@/lib/subscriptionMetadata';
+// import { readSubscriptionFromUser } from '@/lib/subscriptionMetadata';
 import { useSupabase } from '@/providers/SupabaseProvider';
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { Redirect, Tabs } from 'expo-router';
@@ -20,12 +20,13 @@ export default function TabLayout() {
   const inactive = scheme === 'dark' ? '#64748b' : '#94a3b8';
   const { session } = useSupabase();
 
-  if (session?.user) {
-    const sub = readSubscriptionFromUser(session.user);
-    if (!sub.onboardingComplete) {
-      return <Redirect href="/subscription-plans" />;
-    }
-  }
+  // SUBSCRIPTION_LOGIC_DISABLED — see lib/subscriptionFeature.ts
+  // if (session?.user) {
+  //   const sub = readSubscriptionFromUser(session.user);
+  //   if (!sub.onboardingComplete) {
+  //     return <Redirect href="/subscription-plans" />;
+  //   }
+  // }
 
   return (
     <CloudSyncGate>
@@ -62,6 +63,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen name="profile" options={{ href: null }} />
+      {/* SUBSCRIPTION_LOGIC_DISABLED — hide Subscription tab
       <Tabs.Screen
         name="subscription"
         options={{
@@ -69,6 +71,8 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => <TabIcon name="crown-outline" color={color} />,
         }}
       />
+      */}
+      <Tabs.Screen name="subscription" options={{ href: null }} />
       <Tabs.Screen
         name="settings"
         options={{

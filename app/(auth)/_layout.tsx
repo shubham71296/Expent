@@ -1,4 +1,4 @@
-import { readSubscriptionFromUser } from '@/lib/subscriptionMetadata';
+// import { readSubscriptionFromUser } from '@/lib/subscriptionMetadata';
 import { passwordResetFlow } from '@/lib/passwordResetFlow';
 import { useSupabase } from '@/providers/SupabaseProvider';
 import { Redirect, Stack, usePathname } from 'expo-router';
@@ -17,15 +17,16 @@ export default function AuthLayout() {
     pathname.includes('verify-otp') ||
     pathname.includes('reset-password');
 
-  if (
-    !loading &&
-    session?.user &&
-    !onPasswordRecoveryRoute &&
-    !passwordResetFlow.isActive() &&
-    !readSubscriptionFromUser(session.user).onboardingComplete
-  ) {
-    return <Redirect href="/subscription-plans" />;
-  }
+  // SUBSCRIPTION_LOGIC_DISABLED — see lib/subscriptionFeature.ts
+  // if (
+  //   !loading &&
+  //   session?.user &&
+  //   !onPasswordRecoveryRoute &&
+  //   !passwordResetFlow.isActive() &&
+  //   !readSubscriptionFromUser(session.user).onboardingComplete
+  // ) {
+  //   return <Redirect href="/subscription-plans" />;
+  // }
 
   return (
     <Stack
