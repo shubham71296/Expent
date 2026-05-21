@@ -1,0 +1,7 @@
+# Email: OTP only (no magic link). After editing, paste the same HTML into
+# Supabase Dashboard → Authentication → Email Templates → Magic link,
+# or link the project and run: supabase config push
+
+[auth.email.template.magic_link]
+subject = "Your ExpTrack verification code"
+content_path = "./supabase/templates/magic-link.html"

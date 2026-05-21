@@ -1,25 +1,28 @@
-import { Link } from 'expo-router';
 import * as WebBrowser from 'expo-web-browser';
-import React from 'react';
-import { Platform } from 'react-native';
+import { BUTTON_ACTIVE_OPACITY } from '@/components/ui/buttonPressable';
+import type { ReactNode } from 'react';
+import { Linking, Platform, TouchableOpacity, type TouchableOpacityProps } from 'react-native';
 
-export function ExternalLink(
-  props: Omit<React.ComponentProps<typeof Link>, 'href'> & { href: string }
-) {
+type Props = Omit<TouchableOpacityProps, 'onPress'> & {
+  href: string;
+  onPress?: TouchableOpacityProps['onPress'];
+};
+
+/** Opens `href` in the in-app browser (native) or default browser (web). No Expo Router `Link`. */
+export function ExternalLink({ href, children, onPress, activeOpacity = BUTTON_ACTIVE_OPACITY, ...rest }: Props) {
   return (
-    <Link
-      target="_blank"
-      {...props}
-      // @ts-expect-error: External URLs are not typed.
-      href={props.href}
+    <TouchableOpacity
+      {...rest}
+      activeOpacity={activeOpacity}
       onPress={(e) => {
+        onPress?.(e);
         if (Platform.OS !== 'web') {
-          // Prevent the default behavior of linking to the default browser on native.
-          e.preventDefault();
-          // Open the link in an in-app browser.
-          WebBrowser.openBrowserAsync(props.href as string);
+          void WebBrowser.openBrowserAsync(href);
+        } else {
+          void Linking.openURL(href);
         }
-      }}
-    />
+      }}>
+      {children}
+    </TouchableOpacity>
   );
 }

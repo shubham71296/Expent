@@ -1,59 +1,82 @@
-import React from 'react';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { Link, Tabs } from 'expo-router';
-import { Pressable } from 'react-native';
+import { CloudSyncGate } from '@/components/CloudSyncGate';
+import { readSubscriptionFromUser } from '@/lib/subscriptionMetadata';
+import { useSupabase } from '@/providers/SupabaseProvider';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import { Redirect, Tabs } from 'expo-router';
+import { useColorScheme } from 'react-native';
 
-import Colors from '@/constants/Colors';
-import { useColorScheme } from '@/components/useColorScheme';
-import { useClientOnlyValue } from '@/components/useClientOnlyValue';
-
-// You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
-function TabBarIcon(props: {
-  name: React.ComponentProps<typeof FontAwesome>['name'];
+function TabIcon({
+  name,
+  color,
+}: {
+  name: keyof typeof MaterialCommunityIcons.glyphMap;
   color: string;
 }) {
-  return <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />;
+  return <MaterialCommunityIcons name={name} size={24} color={color} />;
 }
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
+  const scheme = useColorScheme();
+  const inactive = scheme === 'dark' ? '#64748b' : '#94a3b8';
+  const { session } = useSupabase();
+
+  if (session?.user) {
+    const sub = readSubscriptionFromUser(session.user);
+    if (!sub.onboardingComplete) {
+      return <Redirect href="/subscription-plans" />;
+    }
+  }
 
   return (
+    <CloudSyncGate>
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        // Disable the static render of the header on web
-        // to prevent a hydration error in React Navigation v6.
-        headerShown: useClientOnlyValue(false, true),
+        headerShown: false,
+        tabBarActiveTintColor: '#4f46e5',
+        tabBarInactiveTintColor: inactive,
+        tabBarStyle: {
+          backgroundColor: scheme === 'dark' ? '#020617' : '#ffffff',
+          borderTopColor: scheme === 'dark' ? '#1e293b' : '#e2e8f0',
+        },
+        tabBarLabelStyle: { fontSize: 11, fontWeight: '600' },
       }}>
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Tab One',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-          headerRight: () => (
-            <Link href="/modal" asChild>
-              <Pressable>
-                {({ pressed }) => (
-                  <FontAwesome
-                    name="info-circle"
-                    size={25}
-                    color={Colors[colorScheme ?? 'light'].text}
-                    style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
-                  />
-                )}
-              </Pressable>
-            </Link>
-          ),
+          title: 'Home',
+          tabBarIcon: ({ color }) => <TabIcon name="view-dashboard-outline" color={color} />,
         }}
       />
       <Tabs.Screen
-        name="two"
+        name="history"
         options={{
-          title: 'Tab Two',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          title: 'History',
+          tabBarIcon: ({ color }) => <TabIcon name="format-list-bulleted" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="analytics"
+        options={{
+          title: 'Analytics',
+          tabBarIcon: ({ color }) => <TabIcon name="chart-line" color={color} />,
+        }}
+      />
+      <Tabs.Screen name="profile" options={{ href: null }} />
+      <Tabs.Screen
+        name="subscription"
+        options={{
+          title: 'Subscription',
+          tabBarIcon: ({ color }) => <TabIcon name="crown-outline" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="settings"
+        options={{
+          title: 'Settings',
+          tabBarIcon: ({ color }) => <TabIcon name="cog-outline" color={color} />,
         }}
       />
     </Tabs>
+    </CloudSyncGate>
   );
 }
