@@ -105,7 +105,7 @@ export function AvatarProfileMenu({ avatarLetter, name, email }: Props) {
                       {email}
                     </Text>
                   ) : (
-                    <Text className="mt-0.5 text-xs text-indigo-100">Expent account</Text>
+                    <Text className="mt-0.5 text-xs text-indigo-100">Pennibly account</Text>
                   )}
                 </View>
               </View>

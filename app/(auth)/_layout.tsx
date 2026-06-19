@@ -9,8 +9,8 @@ export default function AuthLayout() {
   const { session, loading } = useSupabase();
   const scheme = useColorScheme();
   const isDark = scheme === 'dark';
-  const headerBg = isDark ? '#020617' : '#eef2ff';
-  const contentBg = isDark ? '#020617' : '#eef2ff';
+  const headerBg = isDark ? '#020617' : '#f1f5f9';
+  const contentBg = isDark ? '#020617' : '#f1f5f9';
 
   const onPasswordRecoveryRoute =
     pathname.includes('forgot-password') ||

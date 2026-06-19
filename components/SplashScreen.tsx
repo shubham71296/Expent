@@ -1,7 +1,9 @@
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useEffect } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Image, StyleSheet, Text, View } from 'react-native';
+
+const penniblyLogo = require('@/assets/images/icon.png');
 import Animated, {
   Easing,
   useAnimatedStyle,
@@ -111,13 +113,11 @@ export function SplashScreen({ message }: Props) {
         style={{ paddingTop: insets.top, paddingBottom: insets.bottom }}>
         <Animated.View style={[logoStyle, styles.logoWrap]}>
           <View style={styles.logoGlow} />
-          <View style={styles.logoCard}>
-            <MaterialCommunityIcons name="wallet-outline" size={44} color="#ffffff" />
-          </View>
+          <Image source={penniblyLogo} style={styles.logoImage} accessibilityLabel="Pennibly logo" />
         </Animated.View>
 
         <Animated.View style={[titleStyle, styles.titleBlock]}>
-          <Text style={styles.brand}>Expent</Text>
+          <Text style={styles.brand}>Pennibly</Text>
           <View style={styles.badgeRow}>
             <View style={styles.badge}>
               <MaterialCommunityIcons name="chart-line" size={14} color="#c7d2fe" />
@@ -187,16 +187,11 @@ const styles = StyleSheet.create({
     borderRadius: 36,
     backgroundColor: 'rgba(255,255,255,0.18)',
   },
-  logoCard: {
-    width: 96,
-    height: 96,
+  logoImage: {
+    width: 112,
+    height: 112,
     borderRadius: 28,
-    backgroundColor: 'rgba(255,255,255,0.2)',
-    borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.35)',
-    alignItems: 'center',
-    justifyContent: 'center',
-    shadowColor: '#312e81',
+    shadowColor: '#1e3a8a',
     shadowOffset: { width: 0, height: 12 },
     shadowOpacity: 0.35,
     shadowRadius: 24,

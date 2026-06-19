@@ -1,17 +1,17 @@
 {
   "expo": {
-    "name": "Expent",
-    "slug": "Expent",
+    "name": "Pennibly",
+    "slug": "Pennibly",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "expent",
+    "scheme": "pennibly",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "splash": {
       "image": "./assets/images/splash-icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#4f46e5"
+      "backgroundColor": "#5c70f0"
     },
     "ios": {
       "supportsTablet": true
@@ -19,11 +19,11 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#4f46e5"
+        "backgroundColor": "#5c70f0"
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.anonymous.Expent"
+      "package": "com.anonymous.Pennibly"
     },
     "web": {
       "bundler": "metro",
@@ -32,12 +32,13 @@
     },
     "plugins": [
       "expo-router",
+      "expo-font",
       "@react-native-community/datetimepicker",
       [
         "expo-notifications",
         {
           "icon": "./assets/images/icon.png",
-          "color": "#4f46e5"
+          "color": "#5c70f0"
         }
       ]
     ],

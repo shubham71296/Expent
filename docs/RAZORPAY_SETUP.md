@@ -1,4 +1,4 @@
-# Razorpay subscription setup (Expent)
+# Razorpay subscription setup (Pennibly)
 
 ## 1. Razorpay Dashboard
 

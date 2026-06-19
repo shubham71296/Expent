@@ -1,7 +1,12 @@
-import { AuthFieldLabel, AuthForm, AuthFormCard } from '@/components/ui/AuthForm';
+import {
+  AuthFieldLabel,
+  AuthForm,
+  AuthFormCard,
+  AuthInfoBanner,
+  AuthNotConfigured,
+} from '@/components/ui/AuthForm';
 import { Button } from '@/components/ui/Button';
 import { IconTextInput } from '@/components/ui/IconTextInput';
-import { AppScreen } from '@/components/ui/Screen';
 import { passwordResetOtpErrorMessage } from '@/lib/authUserMessage';
 import { validateForgotPasswordEmail } from '@/lib/authValidation';
 import { isSupabaseConfigured } from '@/lib/supabase';
@@ -9,8 +14,7 @@ import { toast } from '@/lib/toast';
 import { requestPasswordResetOtp } from '@/services/passwordResetOtp';
 import { router } from 'expo-router';
 import { useCallback, useRef, useState } from 'react';
-import { Text, View, type TextInput as RNTextInput } from 'react-native';
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import { type TextInput as RNTextInput } from 'react-native';
 
 export default function ForgotPasswordScreen() {
   const [email, setEmail] = useState('');
@@ -53,38 +57,24 @@ export default function ForgotPasswordScreen() {
   }, [trimmed]);
 
   if (!isSupabaseConfigured) {
-    return (
-      <AppScreen scroll variant="auth">
-        <View className="mx-4 max-w-md self-center rounded-3xl border border-amber-200/90 bg-white p-6 shadow-md dark:border-amber-900/50 dark:bg-slate-900">
-          <View className="mb-3 items-center">
-            <View className="h-12 w-12 items-center justify-center rounded-2xl bg-amber-100 dark:bg-amber-950/50">
-              <MaterialCommunityIcons name="alert-circle-outline" size={28} color="#d97706" />
-            </View>
-          </View>
-          <Text className="text-center text-base font-semibold text-slate-900 dark:text-white">
-            Supabase not configured
-          </Text>
-          <Text className="mt-2 text-center text-sm leading-6 text-slate-600 dark:text-slate-400">
-            Configure Supabase in .env first.
-          </Text>
-        </View>
-      </AppScreen>
-    );
+    return <AuthNotConfigured message="Configure Supabase in .env first." />;
   }
 
   return (
     <AuthForm
       title="Reset password"
       showBack
+      step={1}
+      totalSteps={3}
+      icon="lock-reset"
+      iconColor="#0284c7"
+      iconBg="bg-sky-100 dark:bg-sky-950/50"
       subtitle="Enter your account email. We will send an 8-digit code to verify it is you.">
       <AuthFormCard>
-        <View className="mb-4 flex-row gap-3 rounded-2xl border border-sky-100 bg-sky-50/90 px-3 py-3 dark:border-sky-900/50 dark:bg-sky-950/40">
-          <MaterialCommunityIcons name="email-outline" size={22} color="#0284c7" style={{ marginTop: 2 }} />
-          <Text className="min-w-0 flex-1 text-xs leading-5 text-sky-950 dark:text-sky-100">
-            You will receive an 8-digit code (not a link). It expires in 10 minutes. Check spam
-            if needed.
-          </Text>
-        </View>
+        <AuthInfoBanner icon="email-fast-outline" tone="info">
+          You will receive an 8-digit code (not a link). It expires in 10 minutes. Check spam if
+          needed.
+        </AuthInfoBanner>
 
         <AuthFieldLabel>Email</AuthFieldLabel>
         <IconTextInput

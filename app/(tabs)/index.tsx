@@ -90,7 +90,7 @@ function DashboardIntro({
       <Text className="text-lg font-bold text-slate-900 dark:text-white">Your spending overview</Text>
       {expenseCount === 0 ? (
         <Text className="mt-2 text-sm leading-6 text-slate-600 dark:text-slate-300">
-          Welcome to Expent. Add your first expense to see monthly totals, category breakdowns, and
+          Welcome to Pennibly. Add your first expense to see monthly totals, category breakdowns, and
           recent activity on this screen.
         </Text>
       ) : (

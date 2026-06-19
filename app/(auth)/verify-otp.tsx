@@ -1,4 +1,4 @@
-import { AuthFieldLabel, AuthForm, AuthFormCard } from '@/components/ui/AuthForm';
+import { AuthFieldLabel, AuthForm, AuthFormCard, AuthInfoBanner } from '@/components/ui/AuthForm';
 import { Button } from '@/components/ui/Button';
 import { OtpInput } from '@/components/ui/OtpInput';
 import { passwordResetOtpErrorMessage } from '@/lib/authUserMessage';
@@ -9,7 +9,7 @@ import { requestPasswordResetOtp, verifyPasswordResetOtp } from '@/services/pass
 import { router, useLocalSearchParams } from 'expo-router';
 import { useCallback, useEffect, useState } from 'react';
 import { BUTTON_ACTIVE_OPACITY } from '@/components/ui/buttonPressable';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { Text, TouchableOpacity } from 'react-native';
 
 export default function VerifyOtpScreen() {
   const { email: emailParam } = useLocalSearchParams<{ email?: string }>();
@@ -83,18 +83,30 @@ export default function VerifyOtpScreen() {
     <AuthForm
       title="Enter verification code"
       showBack
-      subtitle={email ? `We sent an 8-digit code to ${email}` : 'Enter the code from your email'}>
+      step={2}
+      totalSteps={3}
+      icon="shield-key-outline"
+      iconColor="#4f46e5"
+      iconBg="bg-indigo-100 dark:bg-indigo-900/60"
+      subtitle={
+        email
+          ? `We sent an 8-digit code to ${email}. Enter it below to continue.`
+          : 'Enter the code from your email.'
+      }>
       <AuthFormCard>
+        <AuthInfoBanner icon="numeric" tone="info">
+          Tap the boxes below to enter your code. You can paste the full code from your email.
+        </AuthInfoBanner>
+
         <AuthFieldLabel>Verification code</AuthFieldLabel>
-        <View className="mb-6">
-          <OtpInput value={otp} onChange={setOtp} disabled={submitting} autoFocus />
-        </View>
+        <OtpInput value={otp} onChange={setOtp} disabled={submitting} autoFocus />
 
         <Button
           title="Verify code"
           onPress={() => void onVerify()}
           loading={submitting}
           disabled={submitting || resending}
+          className="mt-6"
         />
 
         <TouchableOpacity
@@ -102,7 +114,9 @@ export default function VerifyOtpScreen() {
           activeOpacity={BUTTON_ACTIVE_OPACITY}
           onPress={() => void onResend()}
           disabled={resendDisabled}
-          className={`mt-4 items-center py-2 ${resendDisabled ? 'opacity-50' : ''}`}>
+          className={`mt-4 items-center rounded-full py-2.5 ${
+            resendDisabled ? 'opacity-50' : 'bg-indigo-50 dark:bg-indigo-950/40'
+          }`}>
           <Text className="text-sm font-semibold text-indigo-600 dark:text-indigo-400">
             {resending ? 'Sending…' : resendLabel}
           </Text>

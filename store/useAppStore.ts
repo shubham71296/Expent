@@ -14,15 +14,18 @@ import * as Crypto from 'expo-crypto';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 
-const PERSIST_STORAGE_KEY = 'expent-v1';
-const LEGACY_PERSIST_STORAGE_KEY = 'exptrack-v1';
+const PERSIST_STORAGE_KEY = 'pennibly-v1';
+const LEGACY_PERSIST_STORAGE_KEYS = ['expent-v1', 'exptrack-v1'] as const;
 
-const expentPersistStorage = {
+const penniblyPersistStorage = {
   getItem: async (name: string): Promise<string | null> => {
     const value = await AsyncStorage.getItem(name);
     if (value != null) return value;
     if (name === PERSIST_STORAGE_KEY) {
-      return AsyncStorage.getItem(LEGACY_PERSIST_STORAGE_KEY);
+      for (const legacyKey of LEGACY_PERSIST_STORAGE_KEYS) {
+        const legacy = await AsyncStorage.getItem(legacyKey);
+        if (legacy != null) return legacy;
+      }
     }
     return null;
   },
@@ -249,7 +252,7 @@ export const useAppStore = create<AppState>()(
     }),
     {
       name: PERSIST_STORAGE_KEY,
-      storage: createJSONStorage(() => expentPersistStorage),
+      storage: createJSONStorage(() => penniblyPersistStorage),
       version: 8,
       migrate: (persisted, fromVersion) => {
         const s = { ...(persisted as Record<string, unknown>) };

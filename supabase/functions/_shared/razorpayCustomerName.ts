@@ -12,7 +12,7 @@ export function sanitizeRazorpayCustomerName(
   name: string | undefined | null,
   email: string
 ): string {
-  const fallback = 'Expent User';
+  const fallback = 'Pennibly User';
   const trimmedEmail = email.trim().toLowerCase();
 
   let raw = (name ?? '').trim().replace(/\s+/g, ' ');

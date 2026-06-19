@@ -286,7 +286,7 @@ export default function ReportsScreen() {
       fileName: string
     ): Promise<ExportDeliveryResult> => {
       const params = {
-        title: `Expent — ${reportTitle}`,
+        title: `Pennibly — ${reportTitle}`,
         fileName,
         expenses: list,
         categories,

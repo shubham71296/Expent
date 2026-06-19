@@ -63,7 +63,7 @@ export function AppScreen({
 
   const surfaceClass =
     variant === 'auth'
-      ? 'flex-1 bg-indigo-50/80 dark:bg-slate-950'
+      ? 'flex-1 bg-slate-100 dark:bg-slate-950'
       : 'flex-1 bg-slate-100 dark:bg-slate-950';
 
   if (scroll) {

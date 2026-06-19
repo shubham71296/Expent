@@ -8,7 +8,7 @@ type SendOtpParams = {
 export async function sendOtpEmail({ to, otp }: SendOtpParams): Promise<void> {
   const resendKey = Deno.env.get('RESEND_API_KEY')?.trim();
   const from =
-    Deno.env.get('RESEND_FROM_EMAIL')?.trim() || 'Expent <onboarding@resend.dev>';
+    Deno.env.get('RESEND_FROM_EMAIL')?.trim() || 'Pennibly <onboarding@resend.dev>';
 
   if (!resendKey) {
     const expose = Deno.env.get('EXPOSE_OTP_IN_RESPONSE') === 'true';
@@ -21,15 +21,15 @@ export async function sendOtpEmail({ to, otp }: SendOtpParams): Promise<void> {
     );
   }
 
-  const subject = 'Your Expent password reset code';
+  const subject = 'Your Pennibly password reset code';
   const html = `<div style="font-family:system-ui,sans-serif;max-width:480px;margin:0 auto;padding:24px">
 <h2 style="color:#4f46e5;margin:0 0 12px">Password reset</h2>
-<p style="color:#334155;line-height:1.5">Use this 6-digit code in the Expent app. It expires in ${OTP_TTL_MINUTES} minutes.</p>
+<p style="color:#334155;line-height:1.5">Use this 6-digit code in the Pennibly app. It expires in ${OTP_TTL_MINUTES} minutes.</p>
 <p style="font-size:32px;font-weight:700;letter-spacing:8px;color:#0f172a;margin:24px 0">${otp}</p>
 <p style="color:#64748b;font-size:13px">If you did not request this, you can ignore this email.</p>
 </div>`;
 
-  const text = `Your Expent password reset code is ${otp}. It expires in ${OTP_TTL_MINUTES} minutes.`;
+  const text = `Your Pennibly password reset code is ${otp}. It expires in ${OTP_TTL_MINUTES} minutes.`;
 
   const res = await fetch('https://api.resend.com/emails', {
     method: 'POST',

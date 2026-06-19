@@ -78,7 +78,7 @@ export default function RazorpayCheckoutScreenOriginal() {
         name: params.name,
         email: params.email,
         contact: params.contact,
-        description: 'Expent subscription',
+        description: 'Pennibly subscription',
       });
 
       if (!checkout.paid) {

@@ -1,8 +1,13 @@
-import { AuthFieldLabel, AuthForm, AuthFormCard } from '@/components/ui/AuthForm';
+import {
+  AuthFieldLabel,
+  AuthFooterLink,
+  AuthForm,
+  AuthFormCard,
+  AuthNotConfigured,
+} from '@/components/ui/AuthForm';
 import { Button } from '@/components/ui/Button';
 import { IconTextInput } from '@/components/ui/IconTextInput';
 import { PasswordInput } from '@/components/ui/PasswordInput';
-import { AppScreen } from '@/components/ui/Screen';
 import { credentialAuthErrorMessage } from '@/lib/authUserMessage';
 import { validateRegisterFields } from '@/lib/authValidation';
 import { isSupabaseConfigured } from '@/lib/supabase';
@@ -11,8 +16,7 @@ import { useSupabase } from '@/providers/SupabaseProvider';
 import { router } from 'expo-router';
 import { useCallback, useRef, useState } from 'react';
 import { BUTTON_ACTIVE_OPACITY } from '@/components/ui/buttonPressable';
-import { Text, TouchableOpacity, View, type TextInput as RNTextInput } from 'react-native';
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import { Text, TouchableOpacity, type TextInput as RNTextInput } from 'react-native';
 
 export default function RegisterScreen() {
   const { signUpWithPassword } = useSupabase();
@@ -79,33 +83,19 @@ export default function RegisterScreen() {
   }, [trimmedName, trimmedEmail, password, confirm, signUpWithPassword]);
 
   if (!isSupabaseConfigured) {
-    return (
-      <AppScreen scroll variant="auth">
-        <View className="mx-4 max-w-md self-center rounded-3xl border border-amber-200/90 bg-white p-6 shadow-md dark:border-amber-900/50 dark:bg-slate-900">
-          <View className="mb-3 items-center">
-            <View className="h-12 w-12 items-center justify-center rounded-2xl bg-amber-100 dark:bg-amber-950/50">
-              <MaterialCommunityIcons name="alert-circle-outline" size={28} color="#d97706" />
-            </View>
-          </View>
-          <Text className="text-center text-base font-semibold text-slate-900 dark:text-white">
-            Supabase not configured
-          </Text>
-          <Text className="mt-2 text-center text-sm leading-6 text-slate-600 dark:text-slate-400">
-            Add EXPO_PUBLIC_SUPABASE_URL and EXPO_PUBLIC_SUPABASE_ANON_KEY to your .env file, then
-            restart the app.
-          </Text>
-        </View>
-      </AppScreen>
-    );
+    return <AuthNotConfigured />;
   }
 
   return (
     <AuthForm
-      title="Sign up"
+      title="Create account"
       showBack
-      subtitle="A few details to back up your categories and expenses to the cloud."
+      subtitle="A few details to back up your categories and expenses securely in the cloud."
+      icon="account-plus-outline"
+      iconColor="#7c3aed"
+      iconBg="bg-violet-100 dark:bg-violet-950/60"
       footer={
-        <View className="flex-row flex-wrap items-center justify-center gap-1">
+        <>
           <Text className="text-sm text-slate-600 dark:text-slate-400">Already have an account?</Text>
           <TouchableOpacity
             onPress={() => router.replace('/(auth)/login')}
@@ -114,7 +104,7 @@ export default function RegisterScreen() {
             accessibilityLabel="Sign in">
             <Text className="text-sm font-semibold text-indigo-600 dark:text-indigo-400">Sign in</Text>
           </TouchableOpacity>
-        </View>
+        </>
       }>
       <AuthFormCard>
         <AuthFieldLabel>Full name</AuthFieldLabel>

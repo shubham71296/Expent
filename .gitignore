@@ -6,6 +6,7 @@ node_modules/
 # Expo
 .expo/
 .expo-test-export/
+.expo-test-bundle/
 dist/
 dist-web/
 web-build/
@@ -42,3 +43,6 @@ yarn-error.*
 # generated native folders
 /ios
 /android
+
+# Supabase local link state (machine-specific)
+supabase/.temp/

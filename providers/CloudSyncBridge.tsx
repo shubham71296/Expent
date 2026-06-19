@@ -66,7 +66,7 @@ export function CloudSyncBridge() {
       if (timer) clearTimeout(timer);
       timer = setTimeout(() => {
         void pushLocalDataToCloud(userId).catch((e) =>
-          console.warn('[Expent sync] push failed', e)
+        console.warn('[Pennibly sync] push failed', e)
         );
       }, 700);
     });

@@ -144,7 +144,7 @@ export default function SettingsScreen() {
             className="mb-2"
           />
           <Text className="text-sm text-slate-500 dark:text-slate-400">
-            Expent v1.0 — expense tracking with optional Supabase backup. When you are signed in,
+            Pennibly v1.0 — expense tracking with optional Supabase backup. When you are signed in,
             categories and expenses sync to your account in the background.
           </Text>
         </Card>

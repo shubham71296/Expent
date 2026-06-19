@@ -28,8 +28,8 @@ type ExpenseRow = {
 
 type ExpenseRowLegacy = Omit<ExpenseRow, 'sub_category'>;
 
-const SUB_CATEGORY_NOTE_PREFIX = 'expent:sub:';
-const LEGACY_SUB_CATEGORY_NOTE_PREFIX = 'exptrack:sub:';
+const SUB_CATEGORY_NOTE_PREFIX = 'pennibly:sub:';
+const LEGACY_SUB_CATEGORY_NOTE_PREFIXES = ['expent:sub:', 'exptrack:sub:'] as const;
 
 let subCategoryColumnWarned = false;
 
@@ -51,11 +51,8 @@ function encodeSubCategoryInNote(subCategory: string, note: string): string {
 }
 
 function decodeSubCategoryFromNote(note: string): { subCategory: string; note: string } {
-  const prefix = note.startsWith(SUB_CATEGORY_NOTE_PREFIX)
-    ? SUB_CATEGORY_NOTE_PREFIX
-    : note.startsWith(LEGACY_SUB_CATEGORY_NOTE_PREFIX)
-      ? LEGACY_SUB_CATEGORY_NOTE_PREFIX
-      : null;
+  const prefixes = [SUB_CATEGORY_NOTE_PREFIX, ...LEGACY_SUB_CATEGORY_NOTE_PREFIXES];
+  const prefix = prefixes.find((p) => note.startsWith(p)) ?? null;
   if (!prefix) {
     return { subCategory: '', note };
   }
@@ -158,7 +155,7 @@ async function upsertExpenses(client: SupabaseClient, expenses: Expense[], userI
     if (!subCategoryColumnWarned) {
       subCategoryColumnWarned = true;
       console.warn(
-        '[Expent sync] sub_category column missing on Supabase. In SQL Editor run: alter table public.expenses add column if not exists sub_category text not null default \'\'; Sub categories sync in note until then.'
+        '[Pennibly sync] sub_category column missing on Supabase. In SQL Editor run: alter table public.expenses add column if not exists sub_category text not null default \'\'; Sub categories sync in note until then.'
       );
     }
     return;

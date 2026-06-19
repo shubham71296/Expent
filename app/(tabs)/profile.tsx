@@ -26,7 +26,7 @@ function ProfileHero({ name, email, avatarLetter }: { name: string; email: strin
             {name}
           </Text>
           <Text className="mt-1 text-sm text-indigo-100" numberOfLines={1}>
-            {email ?? 'Expent account'}
+            {email ?? 'Pennibly account'}
           </Text>
         </View>
       </View>

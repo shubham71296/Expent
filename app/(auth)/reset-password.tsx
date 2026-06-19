@@ -1,4 +1,9 @@
-import { AuthFieldLabel, AuthForm, AuthFormCard } from '@/components/ui/AuthForm';
+import {
+  AuthFieldLabel,
+  AuthForm,
+  AuthFormCard,
+  AuthInfoBanner,
+} from '@/components/ui/AuthForm';
 import { Button } from '@/components/ui/Button';
 import { PasswordInput } from '@/components/ui/PasswordInput';
 import { validateNewPasswordFields } from '@/lib/authValidation';
@@ -8,8 +13,7 @@ import { toast } from '@/lib/toast';
 import { completePasswordReset } from '@/services/passwordResetOtp';
 import { router } from 'expo-router';
 import { useCallback, useRef, useState } from 'react';
-import { Text, View, type TextInput as RNTextInput } from 'react-native';
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import { type TextInput as RNTextInput } from 'react-native';
 
 export default function ResetPasswordScreen() {
   const [password, setPassword] = useState('');
@@ -50,14 +54,19 @@ export default function ResetPasswordScreen() {
 
   if (!canReset) {
     return (
-      <AuthForm title="New password" showBack subtitle="Your reset session is missing or expired.">
+      <AuthForm
+        title="Session expired"
+        showBack
+        step={3}
+        totalSteps={3}
+        icon="alert-circle-outline"
+        iconColor="#d97706"
+        iconBg="bg-amber-100 dark:bg-amber-950/50"
+        subtitle="Your reset session is missing or expired. Start over to get a new code.">
         <AuthFormCard>
-          <View className="mb-4 flex-row gap-3 rounded-2xl border border-amber-100 bg-amber-50/90 px-3 py-3 dark:border-amber-900/50 dark:bg-amber-950/40">
-            <MaterialCommunityIcons name="alert-outline" size={22} color="#d97706" style={{ marginTop: 2 }} />
-            <Text className="min-w-0 flex-1 text-xs leading-5 text-amber-950 dark:text-amber-100">
-              Go back and verify your email code again.
-            </Text>
-          </View>
+          <AuthInfoBanner icon="clock-alert-outline" tone="warning">
+            Go back and verify your email code again to set a new password.
+          </AuthInfoBanner>
           <Button title="Start over" onPress={() => router.replace('/(auth)/forgot-password')} />
         </AuthFormCard>
       </AuthForm>
@@ -68,8 +77,18 @@ export default function ResetPasswordScreen() {
     <AuthForm
       title="Set new password"
       showBack
+      step={3}
+      totalSteps={3}
+      icon="lock-check-outline"
+      iconColor="#059669"
+      iconBg="bg-emerald-100 dark:bg-emerald-950/50"
       subtitle="Choose a strong password you have not used here before.">
       <AuthFormCard>
+        <AuthInfoBanner icon="shield-check-outline" tone="success">
+          Code verified. Enter your new password below — at least 8 characters with a letter and a
+          number.
+        </AuthInfoBanner>
+
         <AuthFieldLabel>New password</AuthFieldLabel>
         <PasswordInput
           value={password}
@@ -92,6 +111,7 @@ export default function ResetPasswordScreen() {
           textContentType="newPassword"
           returnKeyType="go"
           onSubmitEditing={() => void onSubmit()}
+          containerClassName="mb-5"
           accessibilityLabel="Confirm new password"
         />
 

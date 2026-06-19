@@ -176,7 +176,7 @@ export function SupabaseProvider({ children }: { children: ReactNode }) {
       try {
         await pushLocalDataToCloud(userId);
       } catch (e) {
-        console.warn('[Expent sync] sign-out push failed', e);
+        console.warn('[Pennibly sync] sign-out push failed', e);
       }
     }
     clearCloudSession();

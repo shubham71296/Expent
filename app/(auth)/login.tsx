@@ -1,11 +1,15 @@
-import { AuthFieldLabel, AuthForm, AuthFormCard } from '@/components/ui/AuthForm';
+import {
+  AuthFieldLabel,
+  AuthFooterLink,
+  AuthForm,
+  AuthFormCard,
+  AuthNotConfigured,
+} from '@/components/ui/AuthForm';
 import { Button } from '@/components/ui/Button';
 import { IconTextInput } from '@/components/ui/IconTextInput';
 import { PasswordInput } from '@/components/ui/PasswordInput';
-import { AppScreen } from '@/components/ui/Screen';
 import { credentialAuthErrorMessage } from '@/lib/authUserMessage';
 import { validateLoginFields } from '@/lib/authValidation';
-// import { readSubscriptionFromUser } from '@/lib/subscriptionMetadata';
 import { isSupabaseConfigured } from '@/lib/supabase';
 import { toast } from '@/lib/toast';
 import { useSupabase } from '@/providers/SupabaseProvider';
@@ -13,7 +17,6 @@ import { router } from 'expo-router';
 import { useCallback, useRef, useState } from 'react';
 import { BUTTON_ACTIVE_OPACITY } from '@/components/ui/buttonPressable';
 import { Text, TouchableOpacity, View, type TextInput as RNTextInput } from 'react-native';
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 export default function LoginScreen() {
   const { signInWithPassword } = useSupabase();
@@ -47,18 +50,11 @@ export default function LoginScreen() {
     }
     setSubmitting(true);
     try {
-      const { error: err, session: signedIn } = await signInWithPassword(trimmedEmail, password);
+      const { error: err } = await signInWithPassword(trimmedEmail, password);
       if (err) {
         toast.error(credentialAuthErrorMessage(err));
         return;
       }
-      // SUBSCRIPTION_LOGIC_DISABLED — see lib/subscriptionFeature.ts
-      // const sub = readSubscriptionFromUser(signedIn?.user ?? null);
-      // if (!sub.onboardingComplete) {
-      //   toast.info('Choose a plan to continue to the app.', 'Subscription required');
-      //   router.replace('/subscription-plans');
-      //   return;
-      // }
       toast.success('You are signed in.', 'Welcome back');
       router.replace('/(tabs)');
     } finally {
@@ -67,32 +63,18 @@ export default function LoginScreen() {
   }, [trimmedEmail, password, signInWithPassword]);
 
   if (!isSupabaseConfigured) {
-    return (
-      <AppScreen scroll variant="auth">
-        <View className="mx-4 max-w-md self-center rounded-3xl border border-amber-200/90 bg-white p-6 shadow-md dark:border-amber-900/50 dark:bg-slate-900">
-          <View className="mb-3 items-center">
-            <View className="h-12 w-12 items-center justify-center rounded-2xl bg-amber-100 dark:bg-amber-950/50">
-              <MaterialCommunityIcons name="alert-circle-outline" size={28} color="#d97706" />
-            </View>
-          </View>
-          <Text className="text-center text-base font-semibold text-slate-900 dark:text-white">
-            Supabase not configured
-          </Text>
-          <Text className="mt-2 text-center text-sm leading-6 text-slate-600 dark:text-slate-400">
-            Add EXPO_PUBLIC_SUPABASE_URL and EXPO_PUBLIC_SUPABASE_ANON_KEY to your .env file, then
-            restart the app.
-          </Text>
-        </View>
-      </AppScreen>
-    );
+    return <AuthNotConfigured />;
   }
 
   return (
     <AuthForm
       title="Sign in"
-      subtitle="Welcome back — sign in to sync your categories and expenses."
+      subtitle="Welcome back — sign in to sync your categories and expenses across devices."
+      icon="login"
+      iconColor="#4f46e5"
+      iconBg="bg-indigo-100 dark:bg-indigo-900/60"
       footer={
-        <View className="flex-row flex-wrap items-center justify-center gap-1">
+        <>
           <Text className="text-sm text-slate-600 dark:text-slate-400">No account?</Text>
           <TouchableOpacity
             onPress={() => router.push('/(auth)/register')}
@@ -103,7 +85,7 @@ export default function LoginScreen() {
               Create one
             </Text>
           </TouchableOpacity>
-        </View>
+        </>
       }>
       <AuthFormCard>
         <AuthFieldLabel>Email</AuthFieldLabel>
@@ -142,7 +124,7 @@ export default function LoginScreen() {
         />
 
         <TouchableOpacity
-          className="mb-5 self-start py-1"
+          className="mb-5 self-start rounded-full bg-indigo-50 px-3 py-1.5 dark:bg-indigo-950/50"
           activeOpacity={BUTTON_ACTIVE_OPACITY}
           onPress={() => router.push('/(auth)/forgot-password')}
           accessibilityRole="link"

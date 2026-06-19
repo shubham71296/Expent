@@ -1,5 +1,5 @@
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import { forwardRef } from 'react';
+import { forwardRef, memo } from 'react';
 import {
   TextInput,
   View,
@@ -19,7 +19,7 @@ type Props = TextInputProps & {
   wrapperClassName?: string;
 };
 
-export const IconTextInput = forwardRef<RNTextInput, Props>(function IconTextInput(
+export const IconTextInput = memo(forwardRef<RNTextInput, Props>(function IconTextInput(
   {
     icon,
     iconColor = '#64748b',
@@ -54,4 +54,4 @@ export const IconTextInput = forwardRef<RNTextInput, Props>(function IconTextInp
       />
     </View>
   );
-});
+}));

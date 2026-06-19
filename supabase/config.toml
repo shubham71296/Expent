@@ -2,6 +2,9 @@
 # Supabase Dashboard → Authentication → Email Templates → Magic link,
 # or link the project and run: supabase config push
 
+[auth.email]
+otp_length = 8
+
 [auth.email.template.magic_link]
-subject = "Your Expent verification code"
+subject = "Your Pennibly verification code"
 content_path = "./supabase/templates/magic-link.html"

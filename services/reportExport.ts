@@ -10,8 +10,11 @@ import * as XLSX from 'xlsx';
 
 const { StorageAccessFramework } = FileSystem;
 
-const ANDROID_DOWNLOADS_DIR_KEY = 'expent.androidDownloadsDirUri';
-const LEGACY_ANDROID_DOWNLOADS_DIR_KEY = 'exptrack.androidDownloadsDirUri';
+const ANDROID_DOWNLOADS_DIR_KEY = 'pennibly.androidDownloadsDirUri';
+const LEGACY_ANDROID_DOWNLOADS_DIR_KEYS = [
+  'expent.androidDownloadsDirUri',
+  'exptrack.androidDownloadsDirUri',
+] as const;
 
 export type ExportPeriod = 'daily' | 'weekly' | 'monthly' | 'yearly' | 'custom';
 
@@ -38,11 +41,11 @@ function fmtAmount(n: number, currency: string) {
 
 export function buildAllReportFileName(ext: string) {
   const stamp = format(new Date(), 'yyyy-MM-dd-HHmm');
-  return `expent_allreport_${stamp}.${ext}`;
+  return `pennibly_allreport_${stamp}.${ext}`;
 }
 
 export function buildCustomReportFileName(start: Date, end: Date, ext: string) {
-  return `expent_${formatExportDateSlug(start)}_to_${formatExportDateSlug(end)}.${ext}`;
+  return `pennibly_${formatExportDateSlug(start)}_to_${formatExportDateSlug(end)}.${ext}`;
 }
 
 function getWritableDirectory(): string {
@@ -67,9 +70,13 @@ async function copyToNamedExportPath(sourceUri: string, fileName: string): Promi
 async function resolveAndroidDownloadsDirectory(): Promise<string> {
   let stored = await AsyncStorage.getItem(ANDROID_DOWNLOADS_DIR_KEY);
   if (!stored) {
-    stored = await AsyncStorage.getItem(LEGACY_ANDROID_DOWNLOADS_DIR_KEY);
-    if (stored) {
-      await AsyncStorage.setItem(ANDROID_DOWNLOADS_DIR_KEY, stored);
+    for (const legacyKey of LEGACY_ANDROID_DOWNLOADS_DIR_KEYS) {
+      const legacy = await AsyncStorage.getItem(legacyKey);
+      if (legacy) {
+        stored = legacy;
+        await AsyncStorage.setItem(ANDROID_DOWNLOADS_DIR_KEY, legacy);
+        break;
+      }
     }
   }
   if (stored) {
@@ -78,7 +85,9 @@ async function resolveAndroidDownloadsDirectory(): Promise<string> {
       return stored;
     } catch {
       await AsyncStorage.removeItem(ANDROID_DOWNLOADS_DIR_KEY);
-      await AsyncStorage.removeItem(LEGACY_ANDROID_DOWNLOADS_DIR_KEY);
+      for (const legacyKey of LEGACY_ANDROID_DOWNLOADS_DIR_KEYS) {
+        await AsyncStorage.removeItem(legacyKey);
+      }
     }
   }
 
@@ -279,7 +288,7 @@ function reportHtml(params: {
     @media print{body{padding:16px}.card,h2{break-inside:avoid}tr{break-inside:avoid}}
   </style></head><body>
     <h1>${escapeHtml(title)}</h1>
-    <p class="muted">Expent · Generated ${format(new Date(), 'PPpp')}</p>
+    <p class="muted">Pennibly · Generated ${format(new Date(), 'PPpp')}</p>
     <div class="meta">
       <span class="pill"><strong>Records</strong>${recordLabel}</span>
       <span class="pill"><strong>Currency</strong>${escapeHtml(primaryCurrency)}</span>
@@ -347,7 +356,7 @@ function buildExcelReportSheet(params: {
   const { title, expenses, breakdown, total, primaryCurrency } = params;
   const generated = format(new Date(), 'd MMMM yyyy, h:mm a');
   const rows: (string | number)[][] = [
-    ['Expent Expense Report'],
+    ['Pennibly Expense Report'],
     [title],
     ['Generated', generated],
     ['Currency', primaryCurrency],
